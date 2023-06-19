@@ -3,7 +3,7 @@ import { useForm } from '../../hooks/useForm'
 import PropTypes from 'prop-types'
 
 export function LoginForm ({ onSubmit, onSignOut }) {
-  const { email, password, handleChange } = useForm({ email: '', password: '' })
+  const { email, password, handleChange } = useForm({ email: 'homegoma@gmail.com', password: '123456' })
   const emailRef = useRef()
   const passwordRef = useRef()
   const handleSubmit = () => {
@@ -20,26 +20,26 @@ export function LoginForm ({ onSubmit, onSignOut }) {
   }
 
   return (
-    <div className='bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col'>
+    <div className='flex flex-col px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md'>
       <div className='mb-4'>
-        <label className='block text-grey-darker text-sm font-bold mb-2' htmlFor='email'>
+        <label className='block mb-2 text-sm font-bold text-grey-darker' htmlFor='email'>
           Correo electrónico
         </label>
-        <input className='shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker' id='email' ref={emailRef} onChange={handleChange} name='email' value={email} type='email' placeholder='pepito@gmail.com' />
+        <input className='w-full px-3 py-2 border rounded shadow appearance-none text-grey-darker' id='email' ref={emailRef} onChange={handleChange} name='email' value={email} type='email' placeholder='pepito@gmail.com' />
       </div>
       <div className='mb-6'>
-        <label className='block text-grey-darker text-sm font-bold mb-2' htmlFor='password'>
+        <label className='block mb-2 text-sm font-bold text-grey-darker' htmlFor='password'>
           Contraseña
         </label>
-        <input className='shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3' id='password' ref={passwordRef} onChange={handleChange} name='password' value={password} type='password' placeholder='******************' />
-        <p className='text-red text-xs italic'>Por favor escribe una contraseña.</p>
+        <input className='w-full px-3 py-2 mb-3 border rounded shadow appearance-none border-red text-grey-darker' id='password' ref={passwordRef} onChange={handleChange} name='password' value={password} type='password' placeholder='******************' />
+        <p className='text-xs italic text-red'>Por favor escribe una contraseña.</p>
       </div>
       <div className='flex items-center justify-start gap-2'>
-        <button onClick={handleSubmit} className='bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' type='button'>
+        <button onClick={handleSubmit} className='px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700' type='button'>
           Acceso
         </button>
-        <button onClick={() => onSignOut()} className='bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded' type='button'>
-          Acceso
+        <button onClick={() => onSignOut()} className='px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700' type='button'>
+          Cerrar sesión
         </button>
       </div>
     </div>

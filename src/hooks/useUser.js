@@ -1,10 +1,26 @@
 import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+
+const initialValue = {
+  uid: '',
+  email: '',
+  displayName: ''
+}
 
 export function useUser (auth) {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState(initialValue)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+
+  const loadUserLocalStorage = () => {
+    const data = localStorage.getItem('usuario')
+    if (!data) return
+    setUser(JSON.parse(data))
+  }
+
+  useEffect(() => {
+    loadUserLocalStorage()
+  }, [])
 
   const _signInWithEmailAndPassword = (email, password) => {
     setIsLoading(true)
@@ -12,8 +28,14 @@ export function useUser (auth) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        // console.log(userCredential.user)
-        setUser(userCredential.user)
+        console.log(userCredential.user)
+        const { user } = userCredential
+        const data = { uid: user.uid, email: user.email, displayName: user.displayName }
+        localStorage.setItem('usuario', JSON.stringify(data))
+
+        setUser(
+          data
+        )
         // ...
       })
       .catch(setError)
@@ -25,7 +47,8 @@ export function useUser (auth) {
     setError(null)
     signOut(auth).then(() => {
       // Sign-out successful.
-      setUser(null)
+      setUser(initialValue)
+      localStorage.removeItem('usuario')
     }).catch((error) => {
       setError(error)
     }).finally(() => setIsLoading(false))
@@ -35,6 +58,10 @@ export function useUser (auth) {
     _signInWithEmailAndPassword,
     _signOut,
     user,
+    // ...user,
+    email: user.email,
+    uid: user.uid,
+    displayName: user.displayName,
     error,
     isLoading
   }
