@@ -1,11 +1,13 @@
-import React, { useRef } from 'react'
+import React, { useContext, useRef } from 'react'
 import { useForm } from '../../hooks/useForm'
-import PropTypes from 'prop-types'
+import { UserContext } from '../../context/UserContext'
 
-export function LoginForm ({ onSubmit, onSignOut }) {
+export function LoginForm () {
+  const { _signInWithEmailAndPassword } = useContext(UserContext)
   const { email, password, handleChange } = useForm({ email: 'homegoma@gmail.com', password: '123456' })
   const emailRef = useRef()
   const passwordRef = useRef()
+
   const handleSubmit = () => {
     if (!email.length) {
       emailRef.current.focus()
@@ -16,7 +18,7 @@ export function LoginForm ({ onSubmit, onSignOut }) {
       return
     }
     // Envio los datos a papá
-    onSubmit({ email, password })
+    _signInWithEmailAndPassword(email, password)
   }
 
   return (
@@ -38,15 +40,9 @@ export function LoginForm ({ onSubmit, onSignOut }) {
         <button onClick={handleSubmit} className='px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700' type='button'>
           Acceso
         </button>
-        <button onClick={() => onSignOut()} className='px-4 py-2 font-bold text-white bg-red-500 rounded hover:bg-red-700' type='button'>
-          Cerrar sesión
-        </button>
       </div>
     </div>
   )
 }
 
-LoginForm.propTypes = {
-  onSubmit: PropTypes.func.isRequired,
-  onSignOut: PropTypes.func.isRequired
-}
+LoginForm.propTypes = {}

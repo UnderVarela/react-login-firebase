@@ -1,26 +1,16 @@
+import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 import { LoginForm } from '../components/login/LoginForm'
-import { auth } from '../helpers/firebase/firebase'
-import { useUser } from '../hooks/useUser'
+import { UserContext } from '../context/UserContext'
 
 export function LoginPage () {
-  const { isLoading, email, uid, error, _signInWithEmailAndPassword, _signOut } = useUser(auth)
-
-  const { message } = error || false
-
-  const handleSign = ({ email, password }) => {
-    _signInWithEmailAndPassword(email, password)
-  }
-
-  const handleSignOut = () => {
-    _signOut()
-  }
-
+  const { error, uid, isLoading } = useContext(UserContext)
   return (
     <>
       <h1 className='text-4xl'>Ejemplo de conexión</h1>
-      <LoginForm onSubmit={handleSign} onSignOut={handleSignOut} />
-      {message}
-      {email}-{uid}
+      <LoginForm />
+      {error?.message}
+      {uid && <Navigate to='/' />}
       {isLoading && 'Cargando....'}
     </>
   )

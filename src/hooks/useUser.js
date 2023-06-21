@@ -73,10 +73,10 @@ export function useUser (auth) {
     _signInWithEmailAndPassword,
     _signOut,
     user,
-    // ...user,
-    email: user.email,
-    uid: user.uid,
-    displayName: user.displayName,
+    ...user,
+    // email: user?.email,
+    // uid: user?.uid,
+    // displayName: user?.displayName,
     error,
     isLoading
   }
