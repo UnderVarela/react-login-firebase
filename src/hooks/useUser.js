@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
 const initialValue = {
@@ -12,14 +12,29 @@ export function useUser (auth) {
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const loadUserLocalStorage = () => {
-    const data = localStorage.getItem('usuario')
-    if (!data) return
-    setUser(JSON.parse(data))
+  const loadUser = () => {
+    // const data = localStorage.getItem('usuario')
+    // if (data) {
+    //   setUser(JSON.parse(data))
+    //   return
+    // }
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        const data = { uid: user.uid, email: user.email, displayName: user.displayName }
+        // localStorage.setItem('usuario', JSON.stringify(data))
+
+        setUser(
+          data
+        )
+      } else {
+        // User is signed out
+        // ...
+      }
+    })
   }
 
   useEffect(() => {
-    loadUserLocalStorage()
+    loadUser()
   }, [])
 
   const _signInWithEmailAndPassword = (email, password) => {
@@ -28,10 +43,10 @@ export function useUser (auth) {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         // Signed in
-        console.log(userCredential.user)
+        // console.log(userCredential.user)
         const { user } = userCredential
         const data = { uid: user.uid, email: user.email, displayName: user.displayName }
-        localStorage.setItem('usuario', JSON.stringify(data))
+        // localStorage.setItem('usuario', JSON.stringify(data))
 
         setUser(
           data
@@ -48,7 +63,7 @@ export function useUser (auth) {
     signOut(auth).then(() => {
       // Sign-out successful.
       setUser(initialValue)
-      localStorage.removeItem('usuario')
+      // localStorage.removeItem('usuario')
     }).catch((error) => {
       setError(error)
     }).finally(() => setIsLoading(false))
