@@ -5,9 +5,12 @@ import { UserContext } from '../context/UserContext'
 export function NavBar () {
   const { _signOut } = useContext(UserContext)
   return (
-    <nav>
+    <nav className='grid grid-cols-6 gap-2'>
       <div>
         <Link to='/'>Inicio</Link>
+      </div>
+      <div>
+        <Link to='/nueva-experiencia'>Experiencias</Link>
       </div>
       <div>
         <Link to='/login'>Login</Link>
