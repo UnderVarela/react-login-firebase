@@ -1,25 +1,34 @@
 import { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 
 export function NavBar () {
   const { _signOut } = useContext(UserContext)
+  const navigate = useNavigate()
   return (
-    <nav className='grid grid-cols-6 gap-2'>
-      <div>
-        <Link to='/'>Inicio</Link>
-      </div>
-      <div>
-        <Link to='/nueva-experiencia'>Experiencias</Link>
-      </div>
-      <div>
-        <Link to='/login'>Login</Link>
-      </div>
-      <div>
-        <button className='p-2 bg-blue-400 rounded' onClick={() => _signOut()}>
+    <nav className='flex justify-between bg-slate-500'>
+      <ul className='flex items-center gap-2'>
+        <li>
+          <Link to='/'>Inicio</Link>
+        </li>
+        <li>
+          <Link to='/experiencias'>Experiencias</Link>
+        </li>
+      </ul>
+      <fieldset className='flex gap-2'>
+        <button
+          className='p-2 bg-blue-400 rounded'
+          onClick={() => navigate('/login')}
+        >
+          Login
+        </button>
+        <button
+          className='p-2 bg-red-400 rounded'
+          onClick={() => _signOut()}
+        >
           Logout
         </button>
-      </div>
+      </fieldset>
     </nav>
   )
 }

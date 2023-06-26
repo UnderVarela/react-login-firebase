@@ -1,48 +1,37 @@
-import { useContext, useEffect, useState } from 'react'
-import { UserContext } from '../context/UserContext'
-import { deleteDocument, getDocuments } from '../helpers/firebase/cloud-firestore'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { getDocuments } from '../helpers/firebase/cloud-firestore'
 
 export function HomePage () {
-  const { email } = useContext(UserContext)
-  const [data, setData] = useState([])
-  // console.log('ojoooo', _getDocs('prueba'))
-  // setData(_getDocs('prueba')) --> mal porque se mete Promise<pending>
+  const [expereriences, setExpereriences] = useState([])
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    getDocuments('prueba').then(datos => setData(datos))
-  }, [])
-
-  const deletePrueba = async (idDoc) => {
-    try {
-      await deleteDocument('prueba', idDoc)
-      const tmp = data.filter(function(item) {
-        if (item.idDoc !== idDoc) return item
+    getDocuments('prueba')
+      .then((algo) => {
+        if (!algo.length) throw new Error('No hay datos')
+        setExpereriences(algo)
       })
-      setData(tmp)
-    } catch (error) {
-      console.log('NOOOOOOOOOOOOOOOOO', error)
-    }
-  }
-
-  const handleDelete = idDoc => {
-    if (!confirm(`Confirma que desea eliminar el documento ${idDoc}`)) return
-    deletePrueba(idDoc)
-  }
+      .catch(setError)
+      .finally(() => setIsLoading(false))
+  }, [])
 
   return (
     <>
-      <h2 className='text-4xl'>Página home {email}</h2>
-      {
-        data.map(item => (
-          <div key={item.idDoc} className='border border-red-600'>
-            <div>{item?.titulo} <button onClick={() => handleDelete(item.idDoc)}>Eliminar</button></div>
-            <div>{item?.descripcion}</div>
-            <div>{item?.jaja}</div>
-            <Link to={`/experiencias/${item.idDoc}`}>Editar Experiencia</Link>
-          </div>
-        ))
-      }
+      <h2 className='text-4xl'>Página home</h2>
+      {isLoading && 'Cargando...'}
+      {/* {!expereriences.length && 'No ha datos'} */}
+      {error && error.message}
+      <div className='mt-2 mb-4 text-xs text-gray-700'>
+        {
+          expereriences?.map(item => (
+            <div className='px-4 py-2 transition-all duration-300 ease-in-out bg-white border-b border-gray-200 hover:bg-sky-100 hover:text-sky-900 last:border-none' key={item.idDoc}>
+              <div className='font-bold'>{item?.titulo} </div>
+              <div>{item?.descripcion}</div>
+            </div>
+          ))
+        }
+      </div>
     </>
   )
 }
