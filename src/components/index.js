@@ -1,2 +1,4 @@
 export * from './CustomButton'
-export * from './'
+export * from './CustomInput'
+export * from './ProtectedRoutes'
+export * from './NavBar'

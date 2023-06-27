@@ -1,9 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { MainTemplate } from '../templates/MainTemplate'
-import { HomePage, LoginPage } from '../pages'
-import { ExperiencesForm } from '../pages/ExperiencesForm'
-import { ExperienciasAdmin } from '../pages/private/ExperienciasAdmin'
-import { AccesoPrivado } from '../components/AccesoPrivado'
+import { HomePage, LoginPage, ExperienciasAdmin, ExperiencesForm } from '../pages'
+import { ProtectedRoutes } from '../components'
 
 export const router = createBrowserRouter([
   {
@@ -15,16 +13,12 @@ export const router = createBrowserRouter([
         element: <HomePage />
       },
       {
-        path:'acceso-no-permitido',
-        element: <div>Acces no permitido</div>
-      },
-      {
         path: 'login',
         element: <LoginPage />
       },
       {
         path: 'experiencias',
-        element: <AccesoPrivado><ExperienciasAdmin /></AccesoPrivado>
+        element: <ProtectedRoutes><ExperienciasAdmin /></ProtectedRoutes>
       },
       {
         path: 'nueva-experiencia',

@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom'
-import { addDocument } from '../helpers/firebase/cloud-firestore'
+import { addDocument } from '../../helpers/firebase/cloud-firestore'
 
 async function guardarDatos (data) {
-  await addDocument('prueba', data)
+  await addDocument('experiences', data)
 }
 
 export function ExperiencesForm () {
- 
   const navigate = useNavigate()
 
   const handleSubmit = (e) => {
