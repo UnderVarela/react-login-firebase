@@ -4,16 +4,17 @@ import { UserContext } from '../context/UserContext'
 import PropTypes from 'prop-types'
 
 // Crea un componente para proteger las rutas
-export function ProtectedRoutes ({ children }) {
+export function ProtectedRoutes ({ children, to = '/' }) {
   // Quién puede entrar
   const { uid } = useContext(UserContext)
   return (
     <>
-      {uid ? children : <Navigate to='/' />}
+      {uid ? children : <Navigate to={to} />}
     </>
   )
 }
 
 ProtectedRoutes.propTypes = {
-  children: PropTypes.any.isRequired
+  children: PropTypes.element.isRequired,
+  to: PropTypes.string
 }
