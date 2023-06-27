@@ -1,9 +1,10 @@
+/* eslint-disable react/jsx-closing-tag-location */
 import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { UserContext } from '../context/UserContext'
 
 export function NavBar () {
-  const { uid, _signOut } = useContext(UserContext)
+  const { uid, email, _signOut } = useContext(UserContext)
   const navigate = useNavigate()
   return (
     <nav className='flex justify-between bg-slate-500'>
@@ -12,6 +13,7 @@ export function NavBar () {
           <Link to='/'>Inicio</Link>
         </li>
         {uid && <li><Link to='/experiencias'>Experiencias</Link></li>}
+        {uid && <li className='text-white'>Benvido {email}</li>}
       </ul>
       <fieldset className='flex gap-2'>
         {
@@ -19,15 +21,14 @@ export function NavBar () {
             ? <button
                 className='p-2 bg-red-400 rounded'
                 onClick={() => _signOut()}
-              >
-              Logout
+              >Logout
             </button>
             : <button
                 className='p-2 bg-blue-400 rounded'
                 onClick={() => navigate('/login')}
               >
               Login
-              </button>
+            </button>
         }
 
       </fieldset>
