@@ -1,5 +1,6 @@
 export * from './CustomButton'
 export * from './CustomInput'
 export * from './ProtectedRoutes'
+export * from './PublicRoutes'
 export * from './NavBar'
 export * from './ListItem'

@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { MainTemplate } from '../templates/MainTemplate'
-import { HomePage, LoginPage, ExperienciasAdmin } from '../pages'
-import { ProtectedRoutes } from '../components'
+import { HomePage, ExperienciasAdmin } from '../pages'
+import { ProtectedRoutes, PublicRoutes } from '../components'
+import { LoginUI } from '../pages/LoginUI'
 
 export const router = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <LoginPage />
+        element: <PublicRoutes><LoginUI /></PublicRoutes>
       },
       {
         path: 'experiencias',
