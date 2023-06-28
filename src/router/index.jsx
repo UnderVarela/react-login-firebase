@@ -1,8 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { MainTemplate } from '../templates/MainTemplate'
-import { HomePage, ExperienciasAdmin } from '../pages'
+import { HomePage, ExperienciasAdmin, LoginPage } from '../pages'
 import { ProtectedRoutes, PublicRoutes } from '../components'
-import { LoginUI } from '../pages/LoginUI'
 
 export const router = createBrowserRouter([
   {
@@ -15,11 +14,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'login',
-        element: <PublicRoutes><LoginUI /></PublicRoutes>
+        element: <PublicRoutes><LoginPage /></PublicRoutes>
       },
       {
         path: 'experiencias',
-        element: <ProtectedRoutes to='/login'><ExperienciasAdmin /></ProtectedRoutes>
+        element: <ProtectedRoutes to='/experiencias'><ExperienciasAdmin /></ProtectedRoutes>
       }
     ]
   }

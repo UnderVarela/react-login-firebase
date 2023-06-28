@@ -1,6 +1,7 @@
 import { ExperiencesForm } from './ExperiencesForm'
 import { useCollection } from '../../hooks/useCollection'
 import { ListItem } from '../../components'
+import { Alert, Box, Grid, Typography } from '@mui/material'
 
 export function ExperienciasAdmin () {
   const { isLoading, error, data: experiences, deleteData, addData } = useCollection('experiences')
@@ -13,16 +14,17 @@ export function ExperienciasAdmin () {
   }
 
   return (
-    <>
-      <h2 className='text-4xl text-center text-red-800'>Zona Administrativa</h2>
-      <div className='flex items-start justify-center gap-5 p-5'>
-        <fieldset>
+    <Box sx={{ padding: 5 }}>
+      <Typography component='h1' variant='h3' textAlign='center'>Experiencias</Typography>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
           <ExperiencesForm onAddDocument={handleAdd} />
-          {isLoading && 'Cargando...'}
-          {error && error.message}
-        </fieldset>
-        <ul className='w-full mt-2 mb-4 text-xs text-gray-700'>
-          {
+          {isLoading && <Alert severity='warning'>Cargando...</Alert>}
+          {error && <Alert severity='error'>{error.message}</Alert>}
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <ul className='mt-2 mb-4 text-xs text-gray-700'>
+            {
             experiences?.map(({ idDoc, titulo, descripcion }) => (
               <ListItem key={idDoc}>
                 <div className='font-bold'>{titulo} </div>
@@ -30,8 +32,9 @@ export function ExperienciasAdmin () {
               </ListItem>
             ))
           }
-        </ul>
-      </div>
-    </>
+          </ul>
+        </Grid>
+      </Grid>
+    </Box>
   )
 }
