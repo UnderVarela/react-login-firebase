@@ -100,7 +100,7 @@ export function ExperienceEdit () {
       >
         Eliminar
       </Button>
-      {error && <Alert severity='error'>{error?.message}</Alert>}
+      {error && <Alert severity='error' sx={{ mt: 3, mb: 2 }}>{error?.message}</Alert>}
     </ContainerForm>
 
   )
