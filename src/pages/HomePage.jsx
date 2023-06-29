@@ -1,24 +1,30 @@
+import { Alert, Box, List, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { ListItem } from '../components/ListItem'
 import { useCollection } from '../hooks/useCollection'
+import { ArrowCircleRight } from '@mui/icons-material'
 
 export function HomePage () {
-  const { isLoading, error, data: experiences } = useCollection('experiences')
+  const { isLoading, error, data: experiences } = useCollection('experiences', 'titulo')
 
   return (
     <>
-      <h2 className='text-4xl'>Página home</h2>
-      {isLoading && 'Cargando...'}
-      {error && error.message}
-      <ul className='mt-2 mb-4 text-xs text-gray-700'>
-        {
-          experiences?.map(({ idDoc, titulo, descripcion }) => (
-            <ListItem key={idDoc}>
-              <div className='font-bold'>{titulo} </div>
-              <div>{descripcion}</div>
-            </ListItem>
-          ))
-        }
-      </ul>
+      <Box sx={{ padding: 5 }}>
+        <Typography component='h1' variant='h3' textAlign='center'>Home</Typography>
+        <List>
+          {
+            experiences?.map(({ idDoc, titulo, descripcion }) => (
+              <ListItem key={idDoc} divider>
+                <ListItemIcon>
+                  <ArrowCircleRight />
+                </ListItemIcon>
+                <ListItemText primary={titulo} secondary={descripcion} />
+              </ListItem>
+            ))
+          }
+        </List>
+        {error && <Alert severity='error'>{error?.message}</Alert>}
+        {isLoading && <Alert severity='info'>Cargando....</Alert>}
+      </Box>
     </>
   )
 }

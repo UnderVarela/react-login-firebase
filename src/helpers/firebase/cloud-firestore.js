@@ -1,6 +1,6 @@
 // Documentación: https://firebase.google.com/docs/firestore?hl=es-419
 import { db } from './firebase'
-import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, updateDoc } from 'firebase/firestore'
+import { collection, addDoc, getDocs, getDoc, deleteDoc, doc, updateDoc, query, orderBy } from 'firebase/firestore'
 
 /**
  *
@@ -18,6 +18,24 @@ export const addDocument = async (uid, data) => await addDoc(collection(db, uid)
 export const getDocuments = async (uid) => {
   const querySnapshot = await getDocs(collection(db, uid))
   const tmp = []
+  querySnapshot.forEach((doc) => {
+    tmp.push({
+      idDoc: doc.id,
+      ...doc.data() // DESTRUCTURING
+    })
+  })
+  return tmp
+}
+
+/**
+ * @param {String} $collectionName Nombre de la colección
+ * @param {String} $orderBy Campo por el que se desea ordenar la búsqueda
+ * @returns {Array} Array de objetos con los documentos encontrados o array vacío si no encuentra nada
+ */
+export const getDocumentsOrderBy = async ($collectionName, $orderBy) => {
+  const tmp = []
+  const q = query(collection(db, $collectionName), orderBy($orderBy))
+  const querySnapshot = await getDocs(q)
   querySnapshot.forEach((doc) => {
     tmp.push({
       idDoc: doc.id,

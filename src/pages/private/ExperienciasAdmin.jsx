@@ -1,17 +1,14 @@
 import { ExperiencesForm } from './ExperiencesForm'
 import { useCollection } from '../../hooks/useCollection'
-import { ListItem } from '../../components'
-import { Alert, Box, Grid, Typography } from '@mui/material'
+import { Alert, Box, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
-
+import { ArrowCircleRight } from '@mui/icons-material'
 
 export function ExperienciasAdmin () {
-  const { isLoading, error, data: experiences, deleteData, addData } = useCollection('experiences')
-  const handleDelete = idDoc => {
-    deleteData(idDoc, 'experiences')
-  }
+  const { isLoading, error, data: experiences, addData } = useCollection('experiences', 'titulo')
+
   const handleAdd = data => {
-    console.log(data)
+    // console.log(data)
     addData(data)
   }
 
@@ -25,20 +22,20 @@ export function ExperienciasAdmin () {
           {error && <Alert severity='error'>{error.message}</Alert>}
         </Grid>
         <Grid item xs={12} sm={6}>
-          <ul className='mt-2 mb-4 text-xs text-gray-700'>
+          <List>
             {
             experiences?.map(({ idDoc, titulo, descripcion }) => (
-              <ListItem key={idDoc}>
-                <div className='font-bold'>{titulo} </div>
-                <div>
-                  {descripcion}
-                  <button onClick={() => handleDelete(idDoc)}>Eliminar</button>
-                  <Link to={`/experiencias/${idDoc}`}>Editar</Link>
-                </div>
+              <ListItem key={idDoc} divider>
+                <ListItemButton component={Link} to={`/experiencias/${idDoc}`}>
+                  <ListItemIcon>
+                    <ArrowCircleRight />
+                  </ListItemIcon>
+                  <ListItemText primary={titulo} secondary={descripcion} />
+                </ListItemButton>
               </ListItem>
             ))
           }
-          </ul>
+          </List>
         </Grid>
       </Grid>
     </Box>

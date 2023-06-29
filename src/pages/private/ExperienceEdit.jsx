@@ -2,12 +2,12 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ContainerForm } from '../../layouts/ContainerForm'
-import { useCollection } from '../../hooks/useCollection'
 import { Alert, Box, Button, Grid, Skeleton, TextField } from '@mui/material'
+import { useCollection } from '../../hooks/useCollection'
 
 export function ExperienceEdit () {
   const { idDoc } = useParams()
-  const { getData, updateData, data, error, isLoading, onChange } = useCollection()
+  const { getData, updateData, data, error, isLoading, onChange, deleteData } = useCollection()
   const navigate = useNavigate()
   const { titulo = '', descripcion = '' } = data || false
 
@@ -23,6 +23,11 @@ export function ExperienceEdit () {
     const formdata = new FormData(e.target)
     const data = Object.fromEntries(formdata.entries())
     updateData('experiences', idDoc, data)
+    if (!error && !isLoading) navigate('/experiencias')
+  }
+
+  const handleDelete = () => {
+    deleteData(idDoc, 'experiences')
     if (!error && !isLoading) navigate('/experiencias')
   }
 
@@ -85,7 +90,16 @@ export function ExperienceEdit () {
       >
         Enviar
       </Button>
-      {isLoading && <Alert severity='info'>Guardando...</Alert>}
+      <Button
+        type='button'
+        fullWidth
+        variant='contained'
+        disabled={isLoading}
+        color='error'
+        onClick={handleDelete}
+      >
+        Eliminar
+      </Button>
       {error && <Alert severity='error'>{error?.message}</Alert>}
     </ContainerForm>
 

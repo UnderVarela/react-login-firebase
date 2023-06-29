@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { addDocument, updateDocument, deleteDocument, getDocuments, getDocument } from '../helpers/firebase/cloud-firestore'
+import { addDocument, updateDocument, deleteDocument, getDocument, getDocumentsOrderBy } from '../helpers/firebase/cloud-firestore'
 
-export function useCollection (collection) {
+export function useCollection (collection, orderBy) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -71,7 +71,7 @@ export function useCollection (collection) {
     if (collection) {
       setError(null)
       setIsLoading(true)
-      getDocuments(collection)
+      getDocumentsOrderBy(collection, orderBy)
         .then((data) => {
           if (!data.length) throw new Error('No hay datos')
           setData(data)

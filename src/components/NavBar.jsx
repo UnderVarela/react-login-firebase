@@ -6,6 +6,11 @@ import { UserContext } from '../context/UserContext'
 export function NavBar () {
   const { uid, email, _signOut } = useContext(UserContext)
   const navigate = useNavigate()
+
+  const handleLogout = () => {
+    _signOut()
+    navigate('/')
+  }
   return (
     <nav className='flex justify-between bg-slate-500'>
       <ul className='flex items-center gap-2'>
@@ -20,7 +25,7 @@ export function NavBar () {
           uid
             ? <button
                 className='p-2 bg-red-400 rounded'
-                onClick={() => _signOut()}
+                onClick={handleLogout}
               >Logout
             </button>
             : <button
