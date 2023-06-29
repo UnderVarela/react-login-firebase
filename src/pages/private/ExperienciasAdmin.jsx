@@ -2,6 +2,8 @@ import { ExperiencesForm } from './ExperiencesForm'
 import { useCollection } from '../../hooks/useCollection'
 import { ListItem } from '../../components'
 import { Alert, Box, Grid, Typography } from '@mui/material'
+import { Link } from 'react-router-dom'
+
 
 export function ExperienciasAdmin () {
   const { isLoading, error, data: experiences, deleteData, addData } = useCollection('experiences')
@@ -28,7 +30,11 @@ export function ExperienciasAdmin () {
             experiences?.map(({ idDoc, titulo, descripcion }) => (
               <ListItem key={idDoc}>
                 <div className='font-bold'>{titulo} </div>
-                <div>{descripcion} <button onClick={() => handleDelete(idDoc)}>Eliminar</button></div>
+                <div>
+                  {descripcion}
+                  <button onClick={() => handleDelete(idDoc)}>Eliminar</button>
+                  <Link to={`/experiencias/${idDoc}`}>Editar</Link>
+                </div>
               </ListItem>
             ))
           }
