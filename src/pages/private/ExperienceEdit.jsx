@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ContainerForm } from '../../layouts/ContainerForm'
 import { useCollection } from '../../hooks/useCollection'
-import { Alert, Button, Grid, TextField } from '@mui/material'
+import { Alert, Box, Button, Grid, Skeleton, TextField } from '@mui/material'
 
 export function ExperienceEdit () {
   const { idDoc } = useParams()
@@ -24,6 +24,28 @@ export function ExperienceEdit () {
     const data = Object.fromEntries(formdata.entries())
     updateData('experiences', idDoc, data)
     if (!error && !isLoading) navigate('/experiencias')
+  }
+
+  if (isLoading) {
+    return (
+      <ContainerForm title='Actualización de experiencia' onSubmit={() => {}}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Skeleton variant='rounded'>
+              <TextField />
+            </Skeleton>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Skeleton variant='rounded'>
+              <TextField />
+            </Skeleton>
+          </Grid>
+        </Grid>
+        <Box sx={{ width: 'auto' }}>
+          <Skeleton animation='wave' height={70} />
+        </Box>
+      </ContainerForm>
+    )
   }
 
   return (
