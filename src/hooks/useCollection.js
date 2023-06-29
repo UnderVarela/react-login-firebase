@@ -1,12 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react'
-import { addDocument, deleteDocument, getDocuments } from '../helpers/firebase/cloud-firestore'
+import { addDocument, updateDocument, deleteDocument, getDocuments, getDocument } from '../helpers/firebase/cloud-firestore'
 
 export function useCollection (collection) {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const [refresh, setRefresh] = useState(true)
+
+  const onChange = e => {
+    setData({
+      ...data,
+      [e.target.name]: e.target.value
+    })
+  }
 
   const addData = async (payload) => {
     setError(null)
@@ -34,6 +41,32 @@ export function useCollection (collection) {
     }
   }
 
+  const updateData = async (collection, idDoc, data) => {
+    setError(null)
+    setIsLoading(true)
+    try {
+      await updateDocument(idDoc, collection, data)
+    } catch (error) {
+      setError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const getData = async (collection, idDoc) => {
+    setError(null)
+    setIsLoading(true)
+    try {
+      const data = await getDocument(collection, idDoc)
+      if (!data) throw new Error('No hay datos')
+      setData(data)
+    } catch (error) {
+      setError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   useEffect(() => {
     if (collection) {
       setError(null)
@@ -49,10 +82,13 @@ export function useCollection (collection) {
   }, [collection, refresh])
 
   return {
-    error,
-    isLoading,
-    data,
     addData,
-    deleteData
+    data,
+    deleteData,
+    error,
+    getData,
+    isLoading,
+    onChange,
+    updateData
   }
 }

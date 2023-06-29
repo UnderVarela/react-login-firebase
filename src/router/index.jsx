@@ -1,6 +1,6 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { MainTemplate } from '../templates/MainTemplate'
-import { HomePage, ExperienciasAdmin, LoginPage, EditarExperiencias } from '../pages'
+import { HomePage, ExperienciasAdmin, LoginPage, ExperienceEdit } from '../pages'
 import { ProtectedRoutes, PublicRoutes } from '../components'
 
 export const router = createBrowserRouter([
@@ -22,7 +22,7 @@ export const router = createBrowserRouter([
       },
       {
         path: 'experiencias/:idDoc',
-        element: <EditarExperiencias />
+        element: <ProtectedRoutes to='/experiencias' params='idDoc'><ExperienceEdit /></ProtectedRoutes>
       }
     ]
   }
