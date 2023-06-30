@@ -1,15 +1,17 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ContainerForm } from '../../layouts/ContainerForm'
-import { Alert, Box, Button, Grid, Skeleton, TextField } from '@mui/material'
+import { Alert, Box, Button, FormControlLabel, Grid, Skeleton, TextField } from '@mui/material'
+import Checkbox from '@mui/material/Checkbox'
 import { useCollection } from '../../hooks/useCollection'
 
 export function ExperienceEdit () {
   const { idDoc } = useParams()
   const { getData, updateData, data, error, isLoading, onChange, deleteData } = useCollection()
-  const navigate = useNavigate()
   const { titulo = '', descripcion = '' } = data || false
+  const [isChecked, setIsChecked] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(
     () => {
@@ -23,12 +25,12 @@ export function ExperienceEdit () {
     const formdata = new FormData(e.target)
     const data = Object.fromEntries(formdata.entries())
     updateData('experiences', idDoc, data)
-    if (!error && !isLoading) navigate('/experiencias')
   }
 
-  const handleDelete = () => {
-    deleteData(idDoc, 'experiences')
-    if (!error && !isLoading) navigate('/experiencias')
+  const handleDelete = async () => {
+    if (!isChecked) return
+    await deleteData(idDoc, 'experiences')
+    if (!error) navigate('/experiencias')
   }
 
   if (isLoading) {
@@ -90,16 +92,20 @@ export function ExperienceEdit () {
       >
         Enviar
       </Button>
-      <Button
-        type='button'
-        fullWidth
-        variant='contained'
-        disabled={isLoading}
-        color='error'
-        onClick={handleDelete}
-      >
-        Eliminar
-      </Button>
+      <Grid component='fieldset' sx={{ p: 2, border: '1px dashed grey' }}>
+        <FormControlLabel control={<Checkbox checked={isChecked} onChange={e => setIsChecked(e.target.checked)} />} label='Eliminar la experiencia' />
+
+        <Button
+          type='button'
+          fullWidth
+          variant='contained'
+          color='error'
+          onClick={handleDelete}
+          disabled={!isChecked}
+        >
+          Eliminar
+        </Button>
+      </Grid>
       {error && <Alert severity='error' sx={{ mt: 3, mb: 2 }}>{error?.message}</Alert>}
     </ContainerForm>
 
