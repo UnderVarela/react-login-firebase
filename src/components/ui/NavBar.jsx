@@ -100,7 +100,7 @@ export function NavBar () {
               }}
             >
               {uid && (
-                <MenuItem componente={Link} to='/experiencias' onClick={handleCloseNavMenu}>
+                <MenuItem component={Link} to='/experiencias' onClick={handleCloseNavMenu}>
                   <Typography textAlign='center'>Experiencias</Typography>
                 </MenuItem>)}
             </Menu>
@@ -125,15 +125,7 @@ export function NavBar () {
             WF
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {uid &&
-            (<Button
-              component={Link}
-              to='/experiencias'
-              onClick={handleCloseNavMenu}
-              sx={{ my: 2, color: 'white', display: 'block' }}
-            >
-              Experiencias
-            </Button>)}
+            {uid && <Button component={Link} to='/experiencias' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>Experiencias</Button>}
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
