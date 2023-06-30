@@ -32,7 +32,6 @@ export function ExperiencesForm ({ onAddDocument }) {
             fullWidth
             id='descripcion'
             label='Descripción'
-            autoFocus
           />
         </Grid>
 

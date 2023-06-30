@@ -18,11 +18,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'experiencias',
-        element: <ProtectedRoutes to='/experiencias'><ExperienciasAdmin /></ProtectedRoutes>
+        element: <ProtectedRoutes to='/login'><ExperienciasAdmin /></ProtectedRoutes>
       },
       {
         path: 'experiencias/:idDoc',
-        element: <ProtectedRoutes to='/experiencias' params='idDoc'><ExperienceEdit /></ProtectedRoutes>
+        element: <ProtectedRoutes to='/login' params='idDoc'><ExperienceEdit /></ProtectedRoutes>
       }
     ]
   }

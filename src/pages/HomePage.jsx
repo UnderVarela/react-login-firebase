@@ -1,5 +1,4 @@
-import { Alert, Box, List, ListItemIcon, ListItemText, Typography } from '@mui/material'
-import { ListItem } from '../components/ListItem'
+import { Alert, Box, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { useCollection } from '../hooks/useCollection'
 import { ArrowCircleRight } from '@mui/icons-material'
 
