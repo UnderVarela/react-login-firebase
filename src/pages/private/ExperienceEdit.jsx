@@ -92,7 +92,7 @@ export function ExperienceEdit () {
       >
         Enviar
       </Button>
-      <Grid component='fieldset' sx={{ p: 2, border: '1px dashed grey' }}>
+      <Grid component='fieldset' sx={{ p: 2, border: '1px dashed rgb(138, 31, 31)' }}>
         <FormControlLabel control={<Checkbox checked={isChecked} onChange={e => setIsChecked(e.target.checked)} />} label='Eliminar la experiencia' />
 
         <Button
