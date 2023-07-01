@@ -2,9 +2,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { ContainerForm } from '../../layouts/ContainerForm'
-import { Alert, Box, Button, FormControlLabel, Grid, Skeleton, TextField } from '@mui/material'
+import { Alert, Button, FormControlLabel, Grid, TextField } from '@mui/material'
 import Checkbox from '@mui/material/Checkbox'
 import { useCollection } from '../../hooks/useCollection'
+import { SkeletonExperiences } from '../../components/SkeletonExperiences'
 
 export function ExperienceEdit () {
   const { idDoc } = useParams()
@@ -33,27 +34,7 @@ export function ExperienceEdit () {
     if (!error) navigate('/experiencias')
   }
 
-  if (isLoading) {
-    return (
-      <ContainerForm title='Actualización de experiencia' onSubmit={() => {}}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Skeleton variant='rounded'>
-              <TextField />
-            </Skeleton>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Skeleton variant='rounded'>
-              <TextField />
-            </Skeleton>
-          </Grid>
-        </Grid>
-        <Box sx={{ width: 'auto' }}>
-          <Skeleton animation='wave' height={70} />
-        </Box>
-      </ContainerForm>
-    )
-  }
+  if (isLoading) return <SkeletonExperiences />
 
   return (
     <ContainerForm title='Actualización de experiencia' onSubmit={handleSubmit}>

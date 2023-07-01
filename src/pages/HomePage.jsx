@@ -1,6 +1,7 @@
 import { Alert, Box, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { useCollection } from '../hooks/useCollection'
 import { ArrowCircleRight } from '@mui/icons-material'
+import { SkeletonList } from '../components/SkeletonList'
 
 export function HomePage () {
   const { isLoading, error, data: experiences } = useCollection('experiences', 'titulo')
@@ -22,7 +23,7 @@ export function HomePage () {
           }
         </List>
         {error && <Alert severity='error'>{error?.message}</Alert>}
-        {isLoading && <Alert severity='info'>Cargando....</Alert>}
+        {isLoading && <SkeletonList />}
       </Box>
     </>
   )

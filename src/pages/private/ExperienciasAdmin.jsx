@@ -3,6 +3,8 @@ import { useCollection } from '../../hooks/useCollection'
 import { Alert, Box, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import { ArrowCircleRight } from '@mui/icons-material'
+import { SkeletonExperiences } from '../../components/SkeletonExperiences'
+import { SkeletonList } from '../../components/SkeletonList'
 
 export function ExperienciasAdmin () {
   const { isLoading, error, data: experiences, addData } = useCollection('experiences', 'titulo')
@@ -17,11 +19,11 @@ export function ExperienciasAdmin () {
       <Typography component='h1' variant='h3' textAlign='center'>Experiencias</Typography>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={6}>
-          <ExperiencesForm onAddDocument={handleAdd} />
-          {isLoading && <Alert severity='warning'>Cargando...</Alert>}
+          {isLoading ? <SkeletonExperiences /> : <ExperiencesForm onAddDocument={handleAdd} />}
           {error && <Alert severity='error'>{error.message}</Alert>}
         </Grid>
         <Grid item xs={12} sm={6}>
+          {isLoading && <SkeletonList />}
           <List>
             {
             experiences?.map(({ idDoc, titulo, descripcion }) => (
