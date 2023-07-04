@@ -1,9 +1,9 @@
-import { createBrowserRouter, createHashRouter } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { MainTemplate } from '../templates/MainTemplate'
 import { HomePage, ExperienciasAdmin, LoginPage, ExperienceEdit } from '../pages'
 import { ProtectedRoutes, PublicRoutes } from '../components'
 
-export const router = createHashRouter([
+export const router = createBrowserRouter([
   {
     path: '/',
     element: <MainTemplate />,
