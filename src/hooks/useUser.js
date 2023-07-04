@@ -20,7 +20,7 @@ export function useUser (auth) {
     // }
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        const data = { uid: user.uid, email: user.email, displayName: user.displayName }
+        const data = { uid: user.uid, email: user.email, displayName: user.displayName, photoURL: user.photoURL, phoneNumber: user.phoneNumber }
         // localStorage.setItem('usuario', JSON.stringify(data))
 
         setUser(
@@ -73,11 +73,13 @@ export function useUser (auth) {
   return {
     _signInWithEmailAndPassword,
     _signOut,
-    user,
-    ...user,
-    // email: user?.email,
-    // uid: user?.uid,
-    // displayName: user?.displayName,
+    // user,
+    // ...user,
+    email: user?.email,
+    uid: user?.uid,
+    displayName: user?.displayName,
+    photoURL: user?.photoURL,
+    phoneNumber: user?.phoneNumber,
     error,
     isLoading
   }

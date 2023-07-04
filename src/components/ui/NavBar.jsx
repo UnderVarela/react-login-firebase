@@ -16,10 +16,17 @@ import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
 
 export function NavBar () {
-  const { uid, email, _signOut } = useContext(UserContext)
+  const { uid, _signOut } = useContext(UserContext)
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
+
+  const protectedMenu = [
+    {
+      text: 'Experiencias',
+      to: '/experiencias'
+    }
+  ]
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget)
@@ -99,10 +106,14 @@ export function NavBar () {
                 display: { xs: 'block', md: 'none' }
               }}
             >
-              {uid && (
-                <MenuItem component={Link} to='/experiencias' onClick={handleCloseNavMenu}>
-                  <Typography textAlign='center'>Experiencias</Typography>
-                </MenuItem>)}
+              {
+                uid &&
+                  protectedMenu.map(({ text, to }) => (
+                    <MenuItem key={text} component={Link} to={to} onClick={handleCloseNavMenu}>
+                      <Typography textAlign='center'>{text}</Typography>
+                    </MenuItem>)
+                  )
+              }
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -125,7 +136,14 @@ export function NavBar () {
             WF
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {uid && <Button component={Link} to='/experiencias' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>Experiencias</Button>}
+            {
+                uid &&
+                  protectedMenu.map(({ text, to }) => (
+                    <Button key={text} component={Link} to='/experiencias' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                      <Typography textAlign='center'>{text}</Typography>
+                    </Button>)
+                  )
+              }
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
@@ -150,15 +168,23 @@ export function NavBar () {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem>
-                <Typography textAlign='center'>{email}</Typography>
+              <MenuItem component={Link} to='/profile'>
+                <Typography textAlign='center'>Perfil</Typography>
               </MenuItem>
-              <MenuItem onClick={handleLogin}>
-                <Typography textAlign='center'>Login</Typography>
-              </MenuItem>
-              <MenuItem onClick={handleLogout}>
-                <Typography textAlign='center'>Sign Out</Typography>
-              </MenuItem>
+              {
+                uid
+                  ? (
+                    <MenuItem onClick={handleLogout}>
+                      <Typography textAlign='center'>Sign Out</Typography>
+                    </MenuItem>
+                    )
+                  : (
+                    <MenuItem onClick={handleLogin}>
+                      <Typography textAlign='center'>Login</Typography>
+                    </MenuItem>
+                    )
+              }
+
             </Menu>
           </Box>
         </Toolbar>
