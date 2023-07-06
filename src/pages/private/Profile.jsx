@@ -1,36 +1,58 @@
 import React, { useContext, useRef, useState } from 'react'
 import { ContainerForm } from '../../layouts/ContainerForm'
 import { UserContext } from '../../context/UserContext'
-import { UploadWidget } from '../../components/ui/UploadWidget'
 import { Alert, Button, Grid, Skeleton, TextField } from '@mui/material'
 
 export function Profile () {
   const { displayName, onChange, _updateProfile, error, isLoading } = useContext(UserContext)
   const [image, setImage] = useState(null)
+  const [loader, setisLoader] = useState({
+    isLoading: false,
+    error: null
+  })
   const inputFileRef = useRef()
+  const cloudinaryURLRef = useRef('')
   const handleSubmit = e => {
     e.preventDefault()
     const { target } = e
     const formData = new FormData(target)
+    if (cloudinaryURLRef.current) formData.append('photoURL', cloudinaryURLRef.current)
     const data = Object.fromEntries(formData.entries())
     _updateProfile(data)
   }
 
   const upload = async file => {
+    setisLoader({
+      isLoading: true,
+      error: null
+    })
+    cloudinaryURLRef.current = ''
     const formData = new FormData()
     formData.append('file', file)
     formData.append('upload_preset', 'ngp3nkgu')
     formData.append('api_key', '153898983155635')
-    const response = await fetch(
-      'https://api.cloudinary.com/v1_1/dimvf1zl2/image/upload',
-      {
-        method: 'POST',
-        body: formData
-      }
-    )
-    const fileData = await response.json()
-    console.log(fileData)
-    const { url } = fileData
+    try {
+      const response = await fetch(
+        'https://api.cloudinary.com/v1_1/dimvf1zl2/image/upload',
+        {
+          method: 'POST',
+          body: formData
+        }
+      )
+      const fileData = await response.json()
+      console.log(fileData)
+      cloudinaryURLRef.current = fileData.url
+    } catch (error) {
+      setisLoader({
+        ...loader,
+        error
+      })
+    } finally {
+      setisLoader({
+        ...loader,
+        isLoading: false
+      })
+    }
   }
 
   const cleanUp = () => {
@@ -43,6 +65,7 @@ export function Profile () {
     const newImage = target.files[0]
     if (newImage) {
       setImage(URL.createObjectURL(newImage))
+      upload(newImage)
     } else cleanUp()
   }
 
@@ -91,6 +114,8 @@ export function Profile () {
               Enviar
             </Button>
             {error && <Alert severity='error'>{error.message}</Alert>}
+            {loader?.error && <Alert severity='error'>{loader.error}</Alert>}
+            {loader?.isLoading && <Alert severity='info'>Subiendo...</Alert>}
           </Grid>
         </Grid>
         <button type='button' onClick={cleanUp}>Limpiar</button>

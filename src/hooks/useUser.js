@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 const initialValue = {
   uid: '',
   email: '',
-  displayName: ''
+  displayName: '',
+  photoURL: ''
 }
 
 export function useUser (auth) {
@@ -46,7 +47,7 @@ export function useUser (auth) {
         // Signed in
         // console.log(userCredential.user)
         const { user } = userCredential
-        const data = { uid: user.uid, email: user.email, displayName: user.displayName }
+        const data = { uid: user.uid, email: user.email, displayName: user.displayName, photoURL: user.photoURL }
         // localStorage.setItem('usuario', JSON.stringify(data))
 
         setUser(

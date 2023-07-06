@@ -15,8 +15,21 @@ import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
 
+function AdminMenuItems ({ handleLogout }) {
+  return (
+    <>
+      <MenuItem component={Link} to='/profile'>
+        <Typography textAlign='center'>Perfil</Typography>
+      </MenuItem>
+      <MenuItem onClick={handleLogout}>
+        <Typography textAlign='center'>Sign Out</Typography>
+      </MenuItem>
+    </>
+  )
+}
+
 export function NavBar () {
-  const { uid, _signOut } = useContext(UserContext)
+  const { uid, photoURL, _signOut } = useContext(UserContext)
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
@@ -108,11 +121,11 @@ export function NavBar () {
             >
               {
                 uid &&
-                  protectedMenu.map(({ text, to }) => (
-                    <MenuItem key={text} component={Link} to={to} onClick={handleCloseNavMenu}>
-                      <Typography textAlign='center'>{text}</Typography>
-                    </MenuItem>)
-                  )
+                protectedMenu.map(({ text, to }) => (
+                  <MenuItem key={text} component={Link} to={to} onClick={handleCloseNavMenu}>
+                    <Typography textAlign='center'>{text}</Typography>
+                  </MenuItem>)
+                )
               }
             </Menu>
           </Box>
@@ -137,19 +150,19 @@ export function NavBar () {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {
-                uid &&
-                  protectedMenu.map(({ text, to }) => (
-                    <Button key={text} component={Link} to='/experiencias' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
-                      <Typography textAlign='center'>{text}</Typography>
-                    </Button>)
-                  )
-              }
+              uid &&
+              protectedMenu.map(({ text, to }) => (
+                <Button key={text} component={Link} to='/experiencias' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+                  <Typography textAlign='center'>{text}</Typography>
+                </Button>)
+              )
+            }
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='WF' />
+                <Avatar alt='WF' src={photoURL} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -168,21 +181,10 @@ export function NavBar () {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem component={Link} to='/profile'>
-                <Typography textAlign='center'>Perfil</Typography>
-              </MenuItem>
               {
                 uid
-                  ? (
-                    <MenuItem onClick={handleLogout}>
-                      <Typography textAlign='center'>Sign Out</Typography>
-                    </MenuItem>
-                    )
-                  : (
-                    <MenuItem onClick={handleLogin}>
-                      <Typography textAlign='center'>Login</Typography>
-                    </MenuItem>
-                    )
+                  ? <AdminMenuItems handleLogout={handleLogout} />
+                  : <MenuItem onClick={handleLogin}><Typography textAlign='center'>Login</Typography></MenuItem>
               }
 
             </Menu>
