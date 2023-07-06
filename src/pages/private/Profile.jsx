@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from 'react'
 import { ContainerForm } from '../../layouts/ContainerForm'
 import { UserContext } from '../../context/UserContext'
 import { Alert, Button, Grid, Skeleton, TextField } from '@mui/material'
+import { UpdateEmail } from '../../components/UpdateEmail'
 
 export function Profile () {
   const { displayName, onChange, _updateProfile, error, isLoading } = useContext(UserContext)
@@ -90,9 +91,9 @@ export function Profile () {
   }
   return (
     <>
-      <ContainerForm title='Perfil de usuario' onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={12}>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={6}>
+          <ContainerForm title='Perfil de usuario' onSubmit={handleSubmit}>
             <TextField
               autoComplete='given-name'
               name='displayName'
@@ -103,8 +104,6 @@ export function Profile () {
               value={displayName}
               onChange={onChange}
             />
-          </Grid>
-          <Grid item>
             <Button
               type='submit'
               fullWidth
@@ -116,14 +115,17 @@ export function Profile () {
             {error && <Alert severity='error'>{error.message}</Alert>}
             {loader?.error && <Alert severity='error'>{loader.error}</Alert>}
             {loader?.isLoading && <Alert severity='info'>Subiendo...</Alert>}
-          </Grid>
+
+            <button type='button' onClick={cleanUp}>Limpiar</button>
+            {image}
+            <img src={image} alt='' style={{ maxWidth: '50ch' }} />
+            <input name='photoURL' type='file' onChange={handleFile} ref={inputFileRef} />
+          </ContainerForm>
         </Grid>
-        <button type='button' onClick={cleanUp}>Limpiar</button>
-        {image}
-        <img src={image} alt='' style={{ maxWidth: '50ch' }} />
-        {/* <UploadWidget /> */}
-      </ContainerForm>
-      <input name='photoURL' type='file' onChange={handleFile} ref={inputFileRef} />
+        <Grid item xs={12} sm={6}>
+          <UpdateEmail />
+        </Grid>
+      </Grid>
     </>
   )
 }

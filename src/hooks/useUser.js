@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, signOut } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
 const initialValue = {
@@ -73,6 +73,19 @@ export function useUser (auth) {
       .finally(() => setIsLoading(false))
   }
 
+  const _updateEmail = (email) => {
+    setIsLoading(true)
+    setError(null)
+    updateEmail(auth.currentUser, email).then(() => {
+      setUser({
+        ...user,
+        email
+      })
+    })
+      .catch(setError)
+      .finally(() => setIsLoading(false))
+  }
+
   const _signOut = () => {
     setIsLoading(true)
     setError(null)
@@ -95,6 +108,7 @@ export function useUser (auth) {
     _signInWithEmailAndPassword,
     _signOut,
     _updateProfile,
+    _updateEmail,
     // ...user,
     // user,
     displayName: user?.displayName,
