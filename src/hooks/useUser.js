@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, signOut } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
 const initialValue = {
@@ -58,6 +58,20 @@ export function useUser (auth) {
       .finally(() => setIsLoading(false))
   }
 
+  // Data example: { displayName: "Jane Q. User", photoURL: "https://example.com/jane-q-user/profile.jpg" }
+  const _updateProfile = (data = {}) => {
+    setIsLoading(true)
+    setError(null)
+    updateProfile(auth.currentUser, data).then(() => {
+      setUser({
+        ...user,
+        ...data
+      })
+    })
+      .catch(setError)
+      .finally(() => setIsLoading(false))
+  }
+
   const _signOut = () => {
     setIsLoading(true)
     setError(null)
@@ -70,17 +84,25 @@ export function useUser (auth) {
     }).finally(() => setIsLoading(false))
   }
 
+  const onChange = ({ target: { name, value } }) => {
+    const clone = structuredClone(user)
+    clone[name] = value
+    setUser(clone)
+  }
+
   return {
     _signInWithEmailAndPassword,
     _signOut,
-    // user,
+    _updateProfile,
     // ...user,
-    email: user?.email,
-    uid: user?.uid,
+    // user,
     displayName: user?.displayName,
-    photoURL: user?.photoURL,
-    phoneNumber: user?.phoneNumber,
+    email: user?.email,
     error,
-    isLoading
+    isLoading,
+    onChange,
+    phoneNumber: user?.phoneNumber,
+    photoURL: user?.photoURL,
+    uid: user?.uid
   }
 }
