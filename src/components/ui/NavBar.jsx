@@ -16,13 +16,13 @@ import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-function AdminMenuItems ({ handleLogout }) {
+function AdminMenuItems ({ handleLogout, setAnchorElUser }) {
   return (
     <>
-      <MenuItem component={Link} to='/profile'>
+      <MenuItem onClick={() => setAnchorElUser(null)} component={Link} to='/profile'>
         <Typography textAlign='center'>Perfil</Typography>
       </MenuItem>
-      <MenuItem onClick={handleLogout}>
+      <MenuItem onClick={() => { setAnchorElUser(null); handleLogout() }}>
         <Typography textAlign='center'>Sign Out</Typography>
       </MenuItem>
     </>
@@ -184,7 +184,7 @@ export function NavBar () {
             >
               {
                 uid
-                  ? <AdminMenuItems handleLogout={handleLogout} />
+                  ? <AdminMenuItems handleLogout={handleLogout} setAnchorElUser={setAnchorElUser} />
                   : <MenuItem onClick={handleLogin}><Typography textAlign='center'>Login</Typography></MenuItem>
               }
 
@@ -197,5 +197,6 @@ export function NavBar () {
 }
 
 AdminMenuItems.propTypes = {
-  handleLogout: PropTypes.func
+  handleLogout: PropTypes.func,
+  setAnchorElUser: PropTypes.func
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
 
-export function UploadWidget () {
+export function UploadWidget ({ setUserFiels, _updateProfile }) {
   const cloudinaryRef = useRef(null)
   const widgetRef = useRef(null)
   useEffect(() => {
@@ -8,11 +9,22 @@ export function UploadWidget () {
     widgetRef.current = cloudinaryRef.current.createUploadWidget({
       cloudName: 'dimvf1zl2',
       uploadPreset: 'ngp3nkgu'
-    }, (error, result) => { console.log('Error:', error, 'Resultado:', result) })
+    }, (error, result) => {
+      if (!error && result && result.event === 'success') {
+        console.log('Done! Here is the image info: ', result.info, result.info.secure_url)
+        _updateProfile({ photoURL: result.info.secure_url })
+        setUserFiels({ photoURL: result.info.secure_url })
+      }
+    })
   }, [])
   return (
     <button onClick={() => widgetRef.current.open()}>
       Upload
     </button>
   )
+}
+
+UploadWidget.propTypes = {
+  _updateProfile: PropTypes.func,
+  setUserFiels: PropTypes.func
 }

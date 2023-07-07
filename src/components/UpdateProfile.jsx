@@ -4,6 +4,7 @@ import { useUser } from '../hooks/useUser'
 import { auth } from '../helpers/firebase/firebase'
 import { useState } from 'react'
 import { UploadPhotoURL } from './UploadPhotoURL'
+import { UploadWidget } from './ui/UploadWidget'
 
 export function UpdateProfile () {
   const { displayName, photoURL, error, isLoading, onChange, _updateProfile, setUserFiels } = useUser(auth)
@@ -46,6 +47,7 @@ export function UpdateProfile () {
           disabled={!checkedImage}
         />
         <UploadPhotoURL _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
+        <UploadWidget _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
       </FormGroup>
       <Button
         type='submit'
