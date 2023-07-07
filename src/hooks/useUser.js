@@ -134,6 +134,7 @@ export function useUser (auth) {
     onChange,
     phoneNumber: user?.phoneNumber,
     photoURL: user?.photoURL,
+    setError,
     setUserFiels,
     uid: user?.uid
   }

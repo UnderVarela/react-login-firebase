@@ -161,7 +161,7 @@ export function NavBar () {
           </Box>
 
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title='Open settings'>
+            <Tooltip title='Opciones de configuración'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar alt='WF' title={displayName} src={photoURL} />
               </IconButton>

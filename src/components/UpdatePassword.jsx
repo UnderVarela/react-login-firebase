@@ -1,25 +1,27 @@
-import { useRef } from 'react'
 import { ContainerForm } from '../layouts/ContainerForm'
 import { Alert, Button, TextField } from '@mui/material'
 import { useUser } from '../hooks/useUser'
 import { auth } from '../helpers/firebase/firebase'
 
 export function UpdatePassword () {
-  const passwordRef = useRef()
-  const { error, isLoading, _updatePassword } = useUser(auth)
+  const { error, isLoading, _updatePassword, setError } = useUser(auth)
   const handleSubmit = e => {
     e.preventDefault()
     const formData = new FormData(e.target)
     const data = Object.fromEntries(formData.entries())
-    if (data.password === data.passwordRepeat) _updatePassword(data.password)
+    try {
+      if (data.password === data.passwordRepeat) _updatePassword(data.password)
+      else throw new Error('Passwords no coincidentes')
+    } catch (error) {
+      setError(error)
+    }
   }
   return (
-    <ContainerForm title='Moficiar Contraseña' onSubmit={handleSubmit}>
+    <ContainerForm title='Modificar Contraseña' onSubmit={handleSubmit}>
       <TextField
         margin='normal'
         required
         fullWidth
-        ref={passwordRef}
         name='password'
         label='Password'
         type='password'

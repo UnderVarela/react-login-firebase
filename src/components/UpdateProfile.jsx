@@ -1,19 +1,13 @@
-import { Alert, Avatar, Button, Checkbox, FormControlLabel, FormGroup, Stack, TextField } from '@mui/material'
+import { Alert, Button, Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material'
 import { ContainerForm } from '../layouts/ContainerForm'
 import { useUser } from '../hooks/useUser'
 import { auth } from '../helpers/firebase/firebase'
-import { useRef, useState } from 'react'
+import { useState } from 'react'
+import { UploadPhotoURL } from './UploadPhotoURL'
 
 export function UpdateProfile () {
   const { displayName, photoURL, error, isLoading, onChange, _updateProfile, setUserFiels } = useUser(auth)
-  const [image, setImage] = useState(null)
   const [checkedImage, setCheckedImage] = useState(false)
-  const [loader, setisLoader] = useState({
-    isLoading: false,
-    error: null
-  })
-  const inputFileRef = useRef()
-  const cloudinaryURLRef = useRef('')
 
   const handleSubmit = e => {
     e.preventDefault()
@@ -24,57 +18,6 @@ export function UpdateProfile () {
     _updateProfile(data)
   }
 
-  const cleanUp = () => {
-    URL.revokeObjectURL(image)
-    inputFileRef.current.value = ''
-    setImage(null)
-  }
-
-  const upload = async file => {
-    setisLoader({
-      isLoading: true,
-      error: null
-    })
-    cloudinaryURLRef.current = ''
-    const formData = new FormData()
-    formData.append('file', file)
-    formData.append('upload_preset', 'ngp3nkgu')
-    formData.append('api_key', '153898983155635')
-    try {
-      const response = await fetch(
-        'https://api.cloudinary.com/v1_1/dimvf1zl2/image/upload',
-        {
-          method: 'POST',
-          body: formData
-        }
-      )
-      const fileData = await response.json()
-      // if (cloudinaryURLRef.current) data.photoURL = cloudinaryURLRef.current
-      const profileFormData = new FormData()
-      profileFormData.append('photoURL', fileData.url)
-      const data = Object.fromEntries(profileFormData.entries())
-      _updateProfile(data)
-      setUserFiels({ photoURL: fileData.url })
-      cloudinaryURLRef.current = fileData.url
-    } catch (error) {
-      setisLoader({
-        ...loader,
-        error
-      })
-    } finally {
-      setisLoader({
-        ...loader,
-        isLoading: false
-      })
-    }
-  }
-  const handleFile = ({ target }) => {
-    const newImage = target.files[0]
-    if (newImage) {
-      setImage(URL.createObjectURL(newImage))
-      upload(newImage)
-    } else cleanUp()
-  }
   return (
     <ContainerForm title='Perfil de usuario' onSubmit={handleSubmit}>
       <TextField
@@ -102,17 +45,7 @@ export function UpdateProfile () {
           onChange={onChange}
           disabled={!checkedImage}
         />
-        <Stack
-          direction='row'
-          justifyContent='flex-start'
-          alignItems='center'
-          spacing={0.5}
-        >
-          <input type='file' onChange={handleFile} ref={inputFileRef} />
-          <Button type='button' onClick={cleanUp}>Limpiar </Button>
-
-        </Stack>
-        {image && <Avatar alt={displayName} src={image} />}
+        <UploadPhotoURL _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
       </FormGroup>
       <Button
         type='submit'
@@ -124,8 +57,6 @@ export function UpdateProfile () {
       </Button>
       {error && <Alert severity='error'>{error.message}</Alert>}
       {isLoading && <Alert severity='info'>Guardando...</Alert>}
-      {loader?.error && <Alert severity='error'>{loader.error}</Alert>}
-      {loader?.isLoading && <Alert severity='info'>Subiendo...</Alert>}
     </ContainerForm>
   )
 }
