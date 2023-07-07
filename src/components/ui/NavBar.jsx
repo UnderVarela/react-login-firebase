@@ -14,6 +14,7 @@ import AdbIcon from '@mui/icons-material/Adb'
 import { useContext, useState } from 'react'
 import { UserContext } from '../../context/UserContext'
 import { Link, useNavigate } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 function AdminMenuItems ({ handleLogout }) {
   return (
@@ -29,7 +30,7 @@ function AdminMenuItems ({ handleLogout }) {
 }
 
 export function NavBar () {
-  const { uid, photoURL, _signOut } = useContext(UserContext)
+  const { uid, photoURL, _signOut, displayName } = useContext(UserContext)
   const navigate = useNavigate()
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
@@ -162,7 +163,7 @@ export function NavBar () {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title='Open settings'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='WF' src={photoURL} />
+                <Avatar alt='WF' title={displayName} src={photoURL} />
               </IconButton>
             </Tooltip>
             <Menu
@@ -193,4 +194,8 @@ export function NavBar () {
       </Container>
     </AppBar>
   )
+}
+
+AdminMenuItems.propTypes = {
+  handleLogout: PropTypes.func
 }

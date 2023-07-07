@@ -1,4 +1,4 @@
-import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, signOut } from 'firebase/auth'
+import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile, updateEmail, updatePassword, signOut } from 'firebase/auth'
 import { useEffect, useState } from 'react'
 
 const initialValue = {
@@ -12,6 +12,13 @@ export function useUser (auth) {
   const [user, setUser] = useState(initialValue)
   const [error, setError] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
+
+  const setUserFiels = payload => {
+    setUser({
+      ...user,
+      ...payload
+    })
+  }
 
   const loadUser = () => {
     // const data = localStorage.getItem('usuario')
@@ -86,6 +93,14 @@ export function useUser (auth) {
       .finally(() => setIsLoading(false))
   }
 
+  const _updatePassword = (newPassword) => {
+    setIsLoading(true)
+    setError(null)
+    updatePassword(auth.currentUser, newPassword).then(() => {})
+      .catch(setError)
+      .finally(() => setIsLoading(false))
+  }
+
   const _signOut = () => {
     setIsLoading(true)
     setError(null)
@@ -109,6 +124,7 @@ export function useUser (auth) {
     _signOut,
     _updateProfile,
     _updateEmail,
+    _updatePassword,
     // ...user,
     // user,
     displayName: user?.displayName,
@@ -118,6 +134,7 @@ export function useUser (auth) {
     onChange,
     phoneNumber: user?.phoneNumber,
     photoURL: user?.photoURL,
+    setUserFiels,
     uid: user?.uid
   }
 }
