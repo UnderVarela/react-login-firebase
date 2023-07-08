@@ -3,7 +3,7 @@ import { ContainerForm } from '../layouts/ContainerForm'
 import { useUser } from '../hooks/useUser'
 import { auth } from '../helpers/firebase/firebase'
 import { useState } from 'react'
-import { UploadPhotoURL } from './UploadPhotoURL'
+// import { UploadPhotoURL } from './UploadPhotoURL'
 import { UploadWidget } from './ui/UploadWidget'
 
 export function UpdateProfile () {
@@ -46,7 +46,7 @@ export function UpdateProfile () {
           onChange={onChange}
           disabled={!checkedImage}
         />
-        <UploadPhotoURL _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
+        {/* <UploadPhotoURL _updateProfile={_updateProfile} setUserFiels={setUserFiels} /> */}
         <UploadWidget _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
       </FormGroup>
       <Button

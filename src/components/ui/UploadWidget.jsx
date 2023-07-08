@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
+import { Button } from '@mui/material'
 
 export function UploadWidget ({ setUserFiels, _updateProfile }) {
   const cloudinaryRef = useRef(null)
@@ -18,9 +19,9 @@ export function UploadWidget ({ setUserFiels, _updateProfile }) {
     })
   }, [])
   return (
-    <button onClick={() => widgetRef.current.open()}>
-      Upload
-    </button>
+    <Button onClick={() => widgetRef.current.open()} variant='outlined'>
+      Subir a Cloudinary
+    </Button>
   )
 }
 

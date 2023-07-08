@@ -1,4 +1,4 @@
-import { Button, TextField, Typography } from '@mui/material'
+import { Box, Button, TextField, Typography } from '@mui/material'
 import { useContext, useRef } from 'react'
 import { UserContext } from '../context/UserContext'
 import { ContainerForm } from '../layouts/ContainerForm'
@@ -19,7 +19,7 @@ export function LoginPage () {
     _signInWithEmailAndPassword(email, password)
   }
   return (
-    <>
+    <Box maxWidth='xs'>
       <ContainerForm title='Sign In' onSubmit={handleSubmit}>
         <TextField
           margin='normal'
@@ -56,7 +56,6 @@ export function LoginPage () {
 
         {error && <Typography color='red' component='strong' variant='h6'>{error?.message}</Typography>}
       </ContainerForm>
-
-    </>
+    </Box>
   )
 }
