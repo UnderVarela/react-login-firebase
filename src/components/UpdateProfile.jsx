@@ -1,8 +1,8 @@
-import { Alert, Button, Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material'
+import { useState } from 'react'
+import { Alert, Avatar, Box, Button, Checkbox, FormControlLabel, FormGroup, TextField } from '@mui/material'
 import { ContainerForm } from '../layouts/ContainerForm'
 import { useUser } from '../hooks/useUser'
 import { auth } from '../helpers/firebase/firebase'
-import { useState } from 'react'
 // import { UploadPhotoURL } from './UploadPhotoURL'
 import { UploadWidget } from './ui/UploadWidget'
 
@@ -47,7 +47,10 @@ export function UpdateProfile () {
           disabled={!checkedImage}
         />
         {/* <UploadPhotoURL _updateProfile={_updateProfile} setUserFiels={setUserFiels} /> */}
-        <UploadWidget _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
+        <Box sx={{ display: 'grid', gap: '5px' }}>
+          <UploadWidget _updateProfile={_updateProfile} setUserFiels={setUserFiels} />
+          {photoURL && <Avatar sx={{ justifySelf: 'center', width: 128, height: 128 }} alt='Imagen de perfil' src={photoURL} />}
+        </Box>
       </FormGroup>
       <Button
         type='submit'
